@@ -39,7 +39,7 @@ module.exports = function (app) {
     .delete(function (req, res) {
       Book.deleteMany({}, function (err, docs) {
         if (err) return res.send("Could not remove.");
-        else return res.send("complete delet successful");
+        else return res.send("complete delete successful");
       })
       //if successful response will be 'complete delete successful'
     });
@@ -65,7 +65,8 @@ module.exports = function (app) {
     .post(function (req, res) {
       let bookid = req.params.id;
       let comment = req.body.comment;
-      if (!comment) return res.send('missing required field comment');
+      console.log('------------------', bookid, '  Comment', comment);
+      if (!bookid) return res.send('missing required field comment');
 
 
       Book.findOneAndUpdate(
@@ -75,7 +76,9 @@ module.exports = function (app) {
         function (err, doc) {
           if (err) return res.send('no book exists');
           else {
-            res.json(doc);
+            if (!comment) return res.send('missing required field comment');
+            if (!doc) return res.send('no book exists');
+            res.json({ "_id": doc._id, "title": doc.title, "comments": doc.comment });;
           }
         })
 

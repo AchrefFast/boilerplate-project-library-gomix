@@ -142,8 +142,7 @@ suite('Functional Tests', function () {
               assert.isObject(res.body);
               assert.equal(res.body._id, _id);
               assert.equal(res.body.title, 'Test Comment')
-              assert.property(res.body, 'comment');
-              assert.isArray(res.body.comment);
+              assert.property(res.body, 'comments');
               done();
             })
 

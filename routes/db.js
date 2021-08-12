@@ -13,7 +13,8 @@ mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology
 mongoose.connection.on('error', function (err) {
     console.log(err);
 });
-mongoose.connection.once('open', function () { console.log('Connected to MongoDb...') });
+// mongoose.connection.once('open', function () { console.log('Connected to MongoDb...') });
+module.exports.mongoose = mongoose;
 
 module.exports.Book = Book;
 
@@ -21,7 +22,6 @@ module.exports.Book = Book;
 // We could as well use // async function main(callback){ code here }
 // const main = async (callback) => {
 //     try {
-//         await mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 //         console.log('MongoDb is connected...');
 //         await callback(Book);
 //     }
