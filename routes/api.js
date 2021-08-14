@@ -13,6 +13,7 @@ module.exports = function (app) {
 
 
   app.route('/api/books')
+    // Get all the books.
     .get(function (req, res) {
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
@@ -22,9 +23,8 @@ module.exports = function (app) {
       });
 
     })
-
+    // Add a new book by giving a title.
     .post(function (req, res) {
-
       let title = req.body.title;
       if (!title) return res.send('missing required field title');
       const newBook = new Book({ title: title });
@@ -35,7 +35,7 @@ module.exports = function (app) {
       //response will contain new book object including atleast _id and title
     })
 
-
+    // Delete all the books in the database.
     .delete(function (req, res) {
       Book.deleteMany({}, function (err, docs) {
         if (err) return res.send("Could not remove.");
@@ -47,6 +47,7 @@ module.exports = function (app) {
 
 
   app.route('/api/books/:id')
+    // Get one book by ID.
     .get(function (req, res, next) {
       let bookid = req.params.id;
       Book.findById(bookid, function (err, doc) {
@@ -62,13 +63,12 @@ module.exports = function (app) {
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
     })
 
+    // Find a book and add a comment to it.
     .post(function (req, res) {
       let bookid = req.params.id;
       let comment = req.body.comment;
       console.log('------------------', bookid, '  Comment', comment);
       if (!bookid) return res.send('missing required field comment');
-
-
       Book.findOneAndUpdate(
         { _id: bookid },
         { $push: { 'comment': comment }, $inc: { 'commentcount': 1 } },
@@ -85,7 +85,7 @@ module.exports = function (app) {
 
       //json res format same as .get
     })
-
+    // Delete a book by ID
     .delete(function (req, res) {
       let bookid = req.params.id;
       //if successful response will be 'delete successful'
